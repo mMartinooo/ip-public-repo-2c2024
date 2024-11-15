@@ -16,7 +16,7 @@ def getAllImages(input=None):
             'url': item.get('image'),
             'name': item.get('name'),
             'status': item.get('status'),
-            'last_location': item.get('location'),{}get('name'),
+            'last_location': item.get('location',{}).get('name'),
             'first_seen': item.get('episode', {}) [0] if item.get('episode') else 'desconocido',
         })
     return images
