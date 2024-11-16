@@ -46,24 +46,41 @@
                     <div class="col-md-8">
                         <div class="card-body">
                             <h3 class="card-title">{{ img.name }}</h3>
-                            <p class="card-text">
-                                <strong>
-                                    {% if img.status == 'Alive' %} 
-                                        🟢 {{ img.status }}
-                                    {% elif img.status == 'Dead' %}
-                                        🔴 {{ img.status }} 
-                                    {% else %}
-                                        🟠 {{ img.status }} 
-                                    {% endif %}
-                                </strong>
-                            </p>
+                              <div class="card" style="width: 18rem;">
+                                 <img 
+                                     src="{{ img.url }}" 
+                                     alt="Imagen de {{ img.name }}" 
+                                     class="card-img-top" 
+                                     style="
+                                     border: 4px solid 
+                                     {% if img.status == 'Alive' %} green 
+                                     {% elif img.status == 'Dead' %} red 
+                                     {% else %} orange 
+                                     {% endif %};
+                                       "
+                                        >
+                              <div class="card-body">
+                                  <h5 class="card-title">{{ img.name }}</h5>
+                                  <p class="card-text">
+                                  <strong>
+                                     {% if img.status == 'Alive' %} 
+                                       🟢 {{ img.status }}
+                                     {% elif img.status == 'Dead' %}
+                                       🔴 {{ img.status }}
+                                     {% else %}
+                                       🟠 {{ img.status }}
+                                     {% endif %}
+                                 </strong>
+                                 </p>
+                            </div>
+                          </div>
                             <p class="card-text"><small class="text-body-secondary">Última ubicación: {{ img.last_location }}</small></p>
                             <p class="card-text"><small class="text-body-secondary">Episodio inicial: {{ img.first_seen }}</small></p>
                         </div>
                         {% if request.user.is_authenticated %}
                         <div class="card-footer text-center">
                             <form method="post" action="{% url 'agregar-favorito' %}">
-                                {% csrf_token %}
+                              {% csrf_token %}
                                 <input type="hidden" name="name" value="{{ img.name }}">
                                 <input type="hidden" name="url" value="{{ img.url }}">
                                 <input type="hidden" name="status" value="{{ img.status }}">
