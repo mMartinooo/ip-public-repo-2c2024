@@ -22,7 +22,7 @@ def search(request):
     # si el texto ingresado no es vacío, trae las imágenes y favoritos desde services.py,
     # y luego renderiza el template (similar a home).
     if (search_msg != ''):
-        images = services.getAllImages(search_msg)
+        images = services.getAllImages()
         favourite_list = services.getAllFavourites(request)
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
