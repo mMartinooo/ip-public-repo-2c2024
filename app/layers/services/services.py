@@ -1,5 +1,6 @@
 # capa de servicio/lógica de negocio
 
+from django.shortcuts import redirect
 from ..persistence import repositories
 from ..utilities import translator
 from django.contrib.auth import get_user
