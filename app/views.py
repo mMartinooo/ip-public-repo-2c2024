@@ -1,10 +1,11 @@
 # capa de vista/presentación
 
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from app.layers.persistence import repositories
 from app.layers.utilities import translator
+from app.models import Favourite
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -63,7 +64,24 @@ def saveFavourite(request):
 
 @login_required
 def deleteFavourite(request):
-    pass
+    if request.method == 'POST':
+        # Obtener el ID del favorito a eliminar desde el formulario
+        fav_id = request.POST.get('id')
+
+        # Verificar que el ID sea válido
+        if fav_id:
+            # Obtener el favorito correspondiente al ID (si no existe, devolver 404)
+            favourite = get_object_or_404(Favourite, id=fav_id, user=request.user)
+
+            # Eliminar el favorito
+            favourite.delete()
+
+            # Redirigir a la página de favoritos
+            return redirect('favoritos')  # Asegúrate de que la URL 'favourites' esté definida
+
+        return HttpResponse("No se pudo eliminar el favorito.", status=400)
+
+    return HttpResponse("Método no permitido.", status=405)
 
 @login_required
 def exit(request):
