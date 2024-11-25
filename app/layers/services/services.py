@@ -29,16 +29,15 @@ def getAllImages(input=None):
 
 # añadir favoritos (usado desde el template 'home.html')
 def saveFavourite(request):
-    card = ''
-    fav =  card # transformamos un request del template en una Card.
-    fav.user = request.user # le asignamos el usuario correspondiente.
+    fav =  translator.fromTemplateIntoCard(request) # transformamos un request del template en una Card.
+    fav.user = get_user(request) # le asignamos el usuario correspondiente.
 
     return repositories.saveFavourite(fav) # lo guardamos en la base.
 
 # usados desde el template 'favourites.html'
 def getAllFavourites(request):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return []
     else:
         user = get_user(request)
 
