@@ -1,6 +1,10 @@
 # capa de vista/presentación
 
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+
+from app.layers.persistence import repositories
+from app.layers.utilities import translator
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -33,12 +37,29 @@ def search(request):
 # Estas funciones se usan cuando el usuario está logueado en la aplicación.
 @login_required
 def getAllFavouritesByUser(request):
-    favourite_list = []
+    favourite_list = repositories.getAllFavourites(request.user)
     return render(request, 'favourites.html', { 'favourite_list': favourite_list })
 
 @login_required
 def saveFavourite(request):
-    pass
+    if request.method == 'POST':
+        try:
+            fav = translator.fromTemplateIntoCard(request)  # Se transforma el request en una "Card".
+            fav.user = request.user  # Asignamos el usuario correspondiente.
+
+            # Guardamos el favorito
+            repositories.saveFavourite(fav)
+
+            # Redirigimos a la página de favoritos después de guardar
+            return redirect('favoritos')  # 'favourites' es el nombre de la URL donde deseas redirigir al usuario
+
+        except Exception as e:
+            # Si hay un error, puedes manejarlo y devolver una respuesta adecuada
+            return HttpResponse(f"Error al guardar el favorito: {str(e)}", status=500)
+
+    else:
+        # Si no es un POST, puedes devolver una respuesta adecuada
+        return HttpResponse("Método no permitido", status=405)
 
 @login_required
 def deleteFavourite(request):

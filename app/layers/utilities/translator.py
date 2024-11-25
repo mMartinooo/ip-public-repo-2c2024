@@ -4,13 +4,21 @@ from app.layers.utilities.card import Card
 
 # usado cuando la info. viene de la API, para transformarla en una Card.
 def fromRequestIntoCard(object):
+    image = object.get('image', None)  # Usamos get() para evitar el KeyError
+    name = object.get('name', 'Desconocido')
+    status = object.get('status', 'Desconocido')
+    location = object.get('location', {}).get('name', 'Desconocido')
+    origin = object.get('origin', {}).get('name', 'Desconocido')
+
+    # Ahora, pasamos los valores seguros al objeto Card
     card = Card(
-                        url=object['image'],
-                        name=object['name'],
-                        status=object['status'], 
-                        last_location = object['location']['name'],
-                        first_seen = object['origin']['name']
-                )
+        url=image,
+        name=name,
+        status=status,
+        last_location=location,
+        first_seen=origin
+    )
+    
     return card
 
 # usado cuando la info. viene del template, para transformarlo en una Card antes de guardarlo en la base de datos.

@@ -1,6 +1,8 @@
 # capa de servicio/lógica de negocio
 
 from django.shortcuts import redirect
+
+from app.layers.utilities.card import Card
 from ..persistence import repositories
 from ..utilities import translator
 from django.contrib.auth import get_user
@@ -45,7 +47,7 @@ def getAllFavourites(request):
         mapped_favourites = []
 
         for favourite in favourite_list:
-            card = '' # transformamos cada favorito en una Card, y lo almacenamos en card.
+            card = translator.fromRequestIntoCard(favourite) # transformamos cada favorito en una Card, y lo almacenamos en card.
             mapped_favourites.append(card)
 
         return mapped_favourites
