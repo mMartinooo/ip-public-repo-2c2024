@@ -2,7 +2,6 @@
 
 from django.shortcuts import redirect
 
-from app.layers.utilities.card import Card
 from ..persistence import repositories
 from ..utilities import translator
 from django.contrib.auth import get_user
@@ -51,7 +50,3 @@ def getAllFavourites(request):
             mapped_favourites.append(card)
 
         return mapped_favourites
-
-def deleteFavourite(request):
-    favId = request.POST.get('id')
-    return repositories.deleteFavourite(favId) # borramos un favorito por su ID.

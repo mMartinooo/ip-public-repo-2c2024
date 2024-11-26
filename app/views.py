@@ -52,7 +52,7 @@ def saveFavourite(request):
             repositories.saveFavourite(fav)
 
             # Redirigimos a la página de favoritos después de guardar
-            return redirect('favoritos')  # 'favourites' es el nombre de la URL donde deseas redirigir al usuario
+            return redirect('favoritos')
 
         except Exception as e:
             # Si hay un error, puedes manejarlo y devolver una respuesta adecuada
@@ -77,7 +77,7 @@ def deleteFavourite(request):
             favourite.delete()
 
             # Redirigir a la página de favoritos
-            return redirect('favoritos')  # Asegúrate de que la URL 'favourites' esté definida
+            return redirect('favoritos')
 
         return HttpResponse("No se pudo eliminar el favorito.", status=400)
 
